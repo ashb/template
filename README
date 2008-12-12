@@ -1,0 +1,8 @@
+This is a pure JS (front to back) of perl's Template Toolkit:
+
+  http://template-toolkit.org/
+
+Yes, I'm aware of the Jemplate module, but that uses perl to produce a .js file
+which isn't of much use for a project like flusspferdL
+
+  http://github.com/ruediger/flusspferd/tree/master

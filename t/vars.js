@@ -11,21 +11,20 @@ warn = Function.bind(IO.stderr, 'print');
 t = new Template.Test();
 
 
-t.test_tt = function() {
+(function() {
   var tts = {
     default: new Template({
       INTERPOLATE: 1, 
       ANYCASE: 1, 
       V1DOLLAR: 1, 
-      DBG_OUTPUT_CHUNKS: 1,
-      DBG_OUTPUT_FUNC: 1
+      //DBG_OUTPUT_CHUNKS: 1,
+      //DBG_OUTPUT_FUNC: 1
     }),
     notcase: new Template({INTERPOLATE: 1, V1DOLLAR: 0})
   }
-  var params = this.make_params();
-  print(tts.default.toSource());
-  this._test_expect(new IO.File('t/vars.data'), tts, params);
-}
+  var params = make_params.apply(t);
+  t.build_tests(new IO.File('t/vars_v2.data'), tts, params);
+})()
 
 var days = "Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(/ /);
 var day = -1;
@@ -61,7 +60,7 @@ function yankee() {
     return a;
 }
 
-t.make_params = function() {
+function make_params() {
   c = this.callsign();
 
   var count = 0;

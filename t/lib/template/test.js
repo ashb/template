@@ -12,9 +12,19 @@ if (this.TestHarness === undefined)
 
   test.prototype = {
     __proto__: TestHarness.prototype,
-    
+   
+    __build_case: function(opt) {
+      return function() {
+        this.expect(2);
+        var output = opt.tproc.process(opt.input, opt.params);
+        this.ok(true, 'Template ' + opt.name + ' processed okay');
+        //print(output);
+        this.same(output, opt.expect);
+      }
+    },
+
     // This is the main testing sub-routine.
-    _test_expect: function (data, tproc, params) {
+    build_tests: function (data, tproc, params) {
       var tprocs;
 
       params = params || {};
@@ -33,55 +43,69 @@ if (this.TestHarness === undefined)
       // first test will be empty and can be discarded
       if (tests[0].match(/^\s*$/))
         tests.shift();
-
-      this.expect(3 + tests.length * 2);
-         
-      // first test is that we got hte data to test
-      this.ok(1, "running test_expect()");
-
+      
       if (tproc instanceof Object && !(tproc instanceof Template)) {
         // Key value pairs of processors
         tprocs = tproc;
         for (var i in tproc) {
-          print("using", i);
           tproc = tproc[i];
+          print(tproc.toSource());
           break;
         }
       }
       if (!tproc)
         tproc = new Template;
 
-      this.ok(tproc, "template processor is engaged");
+      this.test_prelude = function() {
+        this.expect(3);
+           
+        // first test is that we got hte data to test
+        this.ok(1, "running test_expect()");
 
-      // third test is that the input read ok, which it did
-      this.ok(1, "input read and split into " + tests.length + " tests");
+
+        this.ok(tproc, "template processor is engaged");
+
+        // third test is that the input read ok, which it did
+        this.ok(1, "input read and split into " + tests.length + " tests");
+      }
 
       var count = 0;
 
       for (var i in tests) {
         var input = tests[i];
         count++;
-        var name = 'template text ' + count;
+        var name ;
 
+        var test = {
+          tproc: tproc,
+          params: params,
+          name: 'template text ' + count
+        }
         input = input.replace(
           /^\s*-- name:? (.*?) --\s*\n/im, 
-          function(whole,n) { name = n; return '' }
+          function(whole,n) { name = test.name = n; return '' }
         );
+        input = input.replace(
+          /^\s*--\s*use\s+(\S+)\s*--\s*\n/im, 
+          function(whole,n) { 
+            var tproc_ = tprocs[n];
+            if (tproc_) {
+              tproc = tproc_;
+              test.tproc = tproc_;
+            }
+            else
+              warn("no such template object to use: " + n);
+            return '';
+          }
+        );
+
 
         // split input by a line like "-- expect --"
         var split = input.split(/^\s*--\s*expect\s*--\s*\n/im);
-        var expect = split[1] || '';
-        input = split[0];
+        test.expect = split[1] || '';
+        test.input = split[0];
 
-        // TODO "-- use name --"
-        try {
-          var output = tproc.process(input, params);
-          print(output);
-          print('------------');
-        }
-        catch (e) {
-          throw(e);
-        }
+        this['test_' + (name || count)] = this.__build_case(test);
       }
     },
 

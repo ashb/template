@@ -15,6 +15,8 @@ if (this.TestHarness === undefined)
     
     // This is the main testing sub-routine.
     _test_expect: function (data, tproc, params) {
+      var tprocs;
+
       params = params || {};
 
       if (data.readWhole instanceof Function)
@@ -37,6 +39,15 @@ if (this.TestHarness === undefined)
       // first test is that we got hte data to test
       this.ok(1, "running test_expect()");
 
+      if (tproc instanceof Object && !(tproc instanceof Template)) {
+        // Key value pairs of processors
+        tprocs = tproc;
+        for (var i in tproc) {
+          print("using", i);
+          tproc = tproc[i];
+          break;
+        }
+      }
       if (!tproc)
         tproc = new Template;
 
@@ -61,11 +72,16 @@ if (this.TestHarness === undefined)
         var split = input.split(/^\s*--\s*expect\s*--\s*\n/im);
         var expect = split[1] || '';
         input = split[0];
-        print(input);
 
         // TODO "-- use name --"
-        var output = tproc.process(input, params);
-        throw output;
+        try {
+          var output = tproc.process(input, params);
+          print(output);
+          print('------------');
+        }
+        catch (e) {
+          throw(e);
+        }
       }
     },
 

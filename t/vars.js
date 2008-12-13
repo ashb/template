@@ -72,7 +72,7 @@ function make_params() {
     return count;
   }
   function halt() { throw new Template.Exception("stop", "stopped"); }
-  function expose() { delete Template.Staash.PRIVATE };
+  function expose() { delete Template.Stash.PRIVATE };
 
   return {
     a: c.a,

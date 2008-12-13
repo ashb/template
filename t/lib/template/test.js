@@ -18,8 +18,15 @@ if (this.TestHarness === undefined)
         this.expect(2);
         var output = opt.tproc.process(opt.input, opt.params);
         this.ok(true, 'Template ' + opt.name + ' processed okay');
-        //print(output);
-        this.same(output, opt.expect);
+
+        // strip any trailing blank lines from expected and real output
+        // I dont agree with this, but its for compat with the perl TT tests
+        output = output.replace(/[\r\n]*$/, '');
+        var expect = opt.expect.replace(/[\r\n]*$/, '');
+        if (!this.same(output, expect)) {
+          print('got: ',output.toSource());
+          print('want:',opt.expect.toSource());
+        }
       }
     },
 

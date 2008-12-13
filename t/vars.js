@@ -10,7 +10,6 @@ warn = Function.bind(IO.stderr, 'print');
 
 t = new Template.Test();
 
-
 (function() {
   var tts = {
     default: new Template({

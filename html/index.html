@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <title>Pure JS implementation of TT</title>
+  <style type="text/css">
+body {
+  background: #fff;
+  color: #444;
+  font: normal 87.5%/1.5
+        Calibri, "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-family: Georgia, Times, 'Times New Roman', serif;
+  font-size: 6em;
+  margin: 0 0 0 0.2em;
+  top: 0px;
+}
+
+h1 span {
+  letter-spacing: -10px;
+}
+
+del {
+  color: #a10;
+}
+
+pre {
+    font: normal 87.5%/1.5
+        Calibri, "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin-bottom: 0;
+    margin-top: 0;
+    overflow: auto;
+}
+
+pre.stdout {
+  border: 1px dashed gray;
+}
+
+pre.stderr {
+    color: #dd4422;
+}
+
+pre.debug {
+  color: #93f;
+  padding-left: 1em;
+}
+
+form div label {
+  width: 175px;
+  float: left;
+}
+
+form div br {
+  display: none;
+}
+
+form textarea {
+  width: 600px;
+  height: 200px;
+}
+
+form div.submit input {
+  margin-left: 175px;
+  margin-bottom: 20px;
+}
+
+form input, form textarea {
+  border: 2px solid #3366cc;
+  background: #bdf;
+}
+  </style>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+  <script type="text/javascript" src="http://github.com/ashb/template/raw/master/lib/Template.js"></script>
+  <script type="text/javascript" src="../lib/Template.js"></script>
+  <script type="text/javascript" src="uneval.js"></script>
+  <script type="text/javascript">//<![CDATA[
+
+function processIt() {
+  tt = new Template();
+
+  var output = document.getElementById('output');
+  while (output.hasChildNodes()) {
+    output.removeChild(output.childNodes[0]);
+  }
+
+  try {
+    var input = document.getElementById('input').value;
+    var stashInput = document.getElementById('stash').value;
+    var stash = {};
+
+    if (stashInput.length)
+     stash = eval('('+stashInput+')');
+
+    if (!stash instanceof Object) 
+      throw new Error('stash input did not give an object');
+
+    var out = tt.process(input, stash);
+    var pre = document.createElement('pre');
+    pre.className = 'tt-output';
+    pre.appendChild(document.createTextNode(out));
+
+    output.appendChild(pre);
+
+    location.hash = '#output';
+
+  } catch (e) {
+    var pre = document.createElement('pre');
+    pre.className = 'stderr';
+    pre.appendChild(document.createTextNode(e.toString() + '\n' + e.stack));
+    output.appendChild(pre);
+    throw e;
+  }
+}
+
+function hideFormAndRunTests(noSlide) {
+  $('#output').empty();
+  if (noSlide) {
+    $('#input-form').hide();
+    runTests();
+  }
+  else
+    $('#input-form').slideToggle(1000, runTests);
+}
+
+
+function runTests() {;
+  var e = document.createElement("script");
+  location.hash = '#run-tests';
+  e.src = 'browser-testing.js';
+  e.type="text/javascript";
+  //e.onload = function() { doTest(); };
+  e.onerror = function() { ; alert('failed to laod browser-testing.js - Cant run test suite'); }
+  document.getElementsByTagName("head")[0].appendChild(e); 
+}
+
+//]]></script>
+</head>
+<body>
+<h1><span class="kern">T</span>emplate <span class="kern">T</span>oolkit</h1>
+<div id="content">
+ <h2>A pure JavaScript implementation of Template Toolkit 2</h2>
+
+ <p><del>This is far from complete, and if you try anything more advanced than
+ IF it will likely not work.</del> It now seems to be largely complete for
+ basic control structures and variable access.</p>
+
+ <p><del>Also this will only work in gecko based browsers (Firefox, Camino et
+ al.) since neither Safari nor IE have decent Javascript support, and while I'm
+ developing it, I want to use the tools that make it easier for me.</del> It
+ now works in Safari! I've not checked IE, but&#8230; meh.</p>
+
+ <p>The code, which is currently released under an MIT license is <a
+ href="http://github.com/ashb/template/tree/master">here</a>.
+
+<form method="get" action="#" id="input-form">
+    <!--div class="submit">
+      <input type="button" onclick="hideFormAndRunTests()" value="Run Test Suite" />
+    </div-->
+    <div class="textarea">
+      <label for="input">TT Input</label><br/>
+      <textarea id="input">This is [% a %]</textarea>
+    </div>
+    <div class="textarea">
+      <label for="stash">Stash data (JSON)</label><br/>
+      <textarea id="stash">{a: function() { return location.href }}</textarea>
+    </div>
+    <div class="submit">
+      <input type="button" value="Process it" onclick="processIt()" />
+    </div>
+  </form>
+  <script type="text/javascript">if (location.hash == '#run-tests') hideFormAndRunTests(1); </script>
+  <div id="output"></div>
+</div>
+</body>
+</html>
+

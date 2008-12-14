@@ -9,6 +9,9 @@ $importer.load('Template.Test');
 warn = Function.bind(IO.stderr, 'print');
 
 t = new Template.Test();
+t.name = 'vars';
+t_v2 = new Template.Test();
+t_v2.name = 'vars_v2';
 
 
 (function() {
@@ -21,10 +24,19 @@ t = new Template.Test();
       //DBG_OUTPUT_FUNC: 1,
       //DEBUG: 1
     }),
-    notcase: new Template({INTERPOLATE: 1, V1DOLLAR: 0})
+    notcase: new Template({INTERPOLATE: 1})
   }
-  var params = make_params.apply(t);
-  t.build_tests(new IO.File('t/vars_v2.data'), tts, params);
+  t.build_tests(new IO.File('t/vars.data'), 
+                tts, make_params.apply(t));
+  tts = {
+    default: new Template({
+      INTERPOLATE: 1, 
+      ANYCASE: 1, 
+    }),
+    notcase: new Template({INTERPOLATE: 1})
+  }
+  t_v2.build_tests(new IO.File('t/vars_v2.data'), 
+                   tts, make_params.apply(t_v2));
 })()
 
 var days = "Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(/ /);
@@ -128,5 +140,7 @@ function make_params() {
   };
 }
 
-t.go();
-//t.run('test_61');
+TestHarness.go();
+//t.go();
+//t_v2.go();
+//t.run('test_1');

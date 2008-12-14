@@ -13,7 +13,7 @@ t.name = 'vars';
 
 var counter = 0;
 t.build_tests(new IO.File('t/binop.data'),
-              new Template({INTERPOLATE: 1, POST_CHOMP: 1}),
+              new Template({INTERPOLATE: 1, POST_CHOMP: 1,/* DBG_OUTPUT_FUNC:1*/}),
               { yes: 1,
                 no: 0,
                 'true': 'this is true',
@@ -28,5 +28,5 @@ t.build_tests(new IO.File('t/binop.data'),
                 reset: function() { return counter = 0; }
               });
 
-//TestHarness.go();
-t.run('test_1');
+TestHarness.go();
+//t.run('test_1');

@@ -17,7 +17,7 @@ t = new Template.Test();
       INTERPOLATE: 1, 
       ANYCASE: 1, 
       V1DOLLAR: 1, 
-      //DBG_OUTPUT_CHUNKS: 1,
+      DBG_OUTPUT_CHUNKS: 1,
       //DBG_OUTPUT_FUNC: 1,
       //DEBUG: 1
     }),
@@ -129,4 +129,4 @@ function make_params() {
 }
 
 t.go();
-//t.run('test_56');
+//t.run('test_61');

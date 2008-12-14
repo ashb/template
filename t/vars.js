@@ -26,7 +26,7 @@ t_v2.name = 'vars_v2';
     }),
     notcase: new Template({INTERPOLATE: 1})
   }
-  t.build_tests(new IO.File('t/vars.data'), 
+  t.build_tests(new IO.File('t/data/vars.data'), 
                 tts, make_params.apply(t));
   tts = {
     default: new Template({
@@ -35,7 +35,7 @@ t_v2.name = 'vars_v2';
     }),
     notcase: new Template({INTERPOLATE: 1})
   }
-  t_v2.build_tests(new IO.File('t/vars_v2.data'), 
+  t_v2.build_tests(new IO.File('t/data/vars_v2.data'), 
                    tts, make_params.apply(t_v2));
 })()
 

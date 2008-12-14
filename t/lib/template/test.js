@@ -42,8 +42,8 @@ if (this.TestHarness === undefined)
       data = data.replace(/^#.*?\n/gm, '');
       
       // remove anything before '-- start --' and/or after '-- stop --'
-      data = data.replace(/.*?\s*--\s*start\s*--\s*/, "")
-                 .replace(/\s*--\s*stop\s*--\s*.*/, "");
+      data = data.replace(/^(?:.|\n)*\s*--\s*start\s*--\s*/, "")
+                 .replace(/\s*--\s*stop\s*--\s*(?:.|\n)*$/, "");
 
       var tests = data.split(/^\s*--\s*test\s*--\s*\n/im);
       // if the first line of the file was '--test--' (optional) then the 

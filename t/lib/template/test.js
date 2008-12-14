@@ -56,7 +56,6 @@ if (this.TestHarness === undefined)
         tprocs = tproc;
         for (var i in tproc) {
           tproc = tproc[i];
-          print(tproc.toSource());
           break;
         }
       }

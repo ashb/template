@@ -18,7 +18,8 @@ t = new Template.Test();
       ANYCASE: 1, 
       V1DOLLAR: 1, 
       //DBG_OUTPUT_CHUNKS: 1,
-      //DBG_OUTPUT_FUNC: 1
+      //DBG_OUTPUT_FUNC: 1,
+      //DEBUG: 1
     }),
     notcase: new Template({INTERPOLATE: 1, V1DOLLAR: 0})
   }
@@ -128,4 +129,4 @@ function make_params() {
 }
 
 t.go();
-//t.run('test_55');
+//t.run('test_56');

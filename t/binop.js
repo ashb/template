@@ -24,7 +24,7 @@ t.build_tests(new IO.File('t/binop.data'),
                 twenty: 20,
                 alpha: function() { return ++counter; },
                 omega: function() { counter += 10; return 0; },
-                count: function() { return couter; },
+                count: function() { return counter; },
                 reset: function() { return counter = 0; }
               });
 

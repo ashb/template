@@ -1,0 +1,88 @@
+-- test --
+[% BLOCK block1 %]
+This is the original block1
+[% END %]
+[% INCLUDE block1 %]
+[% INCLUDE blockdef %]
+[% INCLUDE block1 %]
+
+-- expect --
+This is the original block1
+start of blockdef
+end of blockdef
+This is the original block1
+
+-- test --
+[% BLOCK block1 %]
+This is the original block1
+[% END %]
+[% INCLUDE block1 %]
+[% PROCESS blockdef %]
+[% INCLUDE block1 %]
+
+-- expect --
+This is the original block1
+start of blockdef
+end of blockdef
+This is block 1, defined in blockdef, a is alpha
+
+-- test --
+[% INCLUDE block_a +%]
+[% INCLUDE block_b %]
+-- expect --
+this is block a
+this is block b
+
+-- test --
+[% INCLUDE header 
+   title = 'A New Beginning'
++%]
+A long time ago in a galaxy far, far away...
+[% PROCESS footer %]
+
+-- expect --
+<html><head><title>A New Beginning</title></head><body>
+A long time ago in a galaxy far, far away...
+</body></html>
+
+-- test --
+[% BLOCK foo:bar %]
+blah
+[% END %]
+[% PROCESS foo:bar %]
+-- expect --
+blah
+
+-- test --
+[% BLOCK 'hello html' -%]
+Hello World!
+[% END -%]
+[% PROCESS 'hello html' %]
+-- expect --
+Hello World!
+
+-- test --
+<[% INCLUDE foo %]>
+[% BLOCK foo %][% END %]
+-- expect --
+<>
+
+-- stop --
+# these test the experimental BLOCK args feature which will hopefully allow
+# parser/eval options to be set for different blocks
+
+-- test --
+[% BLOCK foo eval_perl=0 tags="star" -%]
+This is the foo block
+[% END -%]
+foo: [% INCLUDE foo %]
+-- expect --
+foo: This is the foo block
+
+-- test --
+[% BLOCK eval_perl=0 tags="star" -%]
+This is an anonymous block
+[% END -%]
+-- expect --
+This is an anonymous block
+

@@ -452,7 +452,7 @@ e: 3
 -- test --
 [% "x" _ "y" == "xy"      # should be ("x"_"y")=="xy", not "x"_("y"=="xy") %]
 -- expect --
-1
+true
 
 -- test --
 [% add(3, 5) %]
@@ -483,9 +483,4 @@ e: 3
 -%]
 -- expect --
 55
-
--- test --
-[% 1+2*4+1 %]
--- expect --
-10
 

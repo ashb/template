@@ -9,7 +9,7 @@ $importer.load('Template.Test');
 warn = Function.bind(IO.stderr, 'print');
 
 t = new Template.Test();
-t.name = 'vars';
+t.name = 'binop';
 
 var counter = 0;
 t.build_tests(new IO.File('t/data/binop.data'),

@@ -11,10 +11,10 @@ warn = Function.bind(IO.stderr, 'print');
 t = new Template.Test();
 t.name = 'block';
 
-var counter = 0;
 t.build_tests(new IO.File('t/data/block.data'),
               new Template({ 
                 POST_CHOMP: 1,
+                //DBG_OUTPUT_FUNC: 1,
                 BLOCKS: {
                   header: '<html><head><title>[% title %]</title></head><body>',
                   footer: '</body></html>',
@@ -24,5 +24,5 @@ t.build_tests(new IO.File('t/data/block.data'),
                 }
               }));
 
-TestHarness.go();
-
+//TestHarness.go();
+t.run('test_1');

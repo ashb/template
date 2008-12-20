@@ -14,6 +14,7 @@ t.name = 'block';
 t.build_tests(new IO.File('t/data/block.data'),
               new Template({ 
                 POST_CHOMP: 1,
+                INCLUDE_PATH: ['t/data/lib'],
                 //DBG_OUTPUT_FUNC: 1,
                 BLOCKS: {
                   header: '<html><head><title>[% title %]</title></head><body>',

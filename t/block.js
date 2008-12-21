@@ -23,7 +23,7 @@ t.build_tests(new IO.File('t/data/block.data'),
                   block_b: function() { return 'this is block b' },
                   
                 }
-              }));
+              }), t.callsign());
 
 TestHarness.go();
 //t.run('test_1');

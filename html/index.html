@@ -173,19 +173,20 @@ function runTests() {;
     <div class="textarea">
       <label for="input">TT Input</label><br/>
       <textarea id="input">[% BLOCK wrap -%]
-<h1>[% title %]</h1>
+&lt;h1>[% title %]&lt;/h1>
 
-<div>
-  [% content %]
-</div>
+&lt;div>[% content %]&lt;/div>
 [%- END -%]
+
 [% WRAPPER wrap title = get_title() %]
 This is [% a %]
 [% END %]</textarea>
     </div>
     <div class="textarea">
       <label for="stash">Stash data (JSON)</label><br/>
-      <textarea id="stash">{a: function() { return location.href }}</textarea>
+      <textarea id="stash">{a: function() { return location.href },
+ get_title: function() { return document.title }
+}</textarea>
     </div>
     <div class="submit">
       <input type="button" value="Process it" onclick="processIt()" />
@@ -193,6 +194,13 @@ This is [% a %]
   </form>
   <script type="text/javascript">if (location.hash == '#run-tests') hideFormAndRunTests(1); </script>
   <div id="output"></div>
+
+<h2>A Changelog of sorts</h2>
+<ul>
+  <li>21<sup>st</sup> Dec, 2008
+    <p>WRAPPER and BLOCK seem to be fully working, and we now pass t/wrapper.t, t/binop.t, t/block.t, t/vars.t and t/varsv1.t</p>
+  </li>
+</ul>
 </div>
 </body>
 </html>

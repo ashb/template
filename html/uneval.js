@@ -17,7 +17,7 @@
 	    return '\'' 
 	    + o.toString().replace(/[\\\"\']/g, function(m0){
 		return '\\' + m0;
-	    }) 
+	    }).replace(/\n/g, '\\n')
 	    + '\'';
 	},
 	'undefined': function(o){ return 'undefined' },

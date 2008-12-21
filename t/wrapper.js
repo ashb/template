@@ -13,8 +13,10 @@ t.name = 'wrapper';
 
 t.build_tests(new IO.File('t/data/wrapper.data'),
               new Template({ 
-                POST_CHOMP: 1,
-                INCLUDE_PATH: ['t/data/lib'],
+                INCLUDE_PATH: [
+                  't/data/src',
+                  't/data/lib',
+                ],
                 //DBG_OUTPUT_FUNC: 1,
                 TRIM: 1
               }), t.callsign());

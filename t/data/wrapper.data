@@ -145,6 +145,24 @@ outer [bar]: The title is foo
 -- expect --
 <a><b><c>FOO</c></b></a>
 
+-- test --
+[% BLOCK wrap -%]
+<h1>[% title %]</h1>
+<h2>[% subtitle %]</h2>
+<div>
+  [% content %]
+</div>
+[%- END -%]
+[% WRAPPER wrap title = x() subtitle = w -%]
+This is [% a %]
+[%- END %]
+-- expect --
+<h1>x-ray</h1>
+<h2>whisky</h2>
+<div>
+  This is alpha
+</div>
+
 -- stop --
 # This next text demonstrates a limitation in the parser
 # http://tt2.org/pipermail/templates/2006-January/008197.html

@@ -172,7 +172,16 @@ function runTests() {;
     </div-->
     <div class="textarea">
       <label for="input">TT Input</label><br/>
-      <textarea id="input">This is [% a %]</textarea>
+      <textarea id="input">[% BLOCK wrap -%]
+<h1>[% title %]</h1>
+
+<div>
+  [% content %]
+</div>
+[%- END -%]
+[% WRAPPER wrap title = get_title() %]
+This is [% a %]
+[% END %]</textarea>
     </div>
     <div class="textarea">
       <label for="stash">Stash data (JSON)</label><br/>

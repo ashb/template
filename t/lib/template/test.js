@@ -24,8 +24,8 @@ if (this.TestHarness === undefined)
         output = output.replace(/[\r\n]*$/, '');
         var expect = opt.expect.replace(/[\r\n]*$/, '');
         if (!this.same(output, expect)) {
-          print('  got: ',output.toSource());
-          print('  want:',expect.toSource());
+          print('  got: ',uneval(output));
+          print('  want:',uneval(expect));
         }
       }
     },

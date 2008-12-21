@@ -25,5 +25,5 @@ t.build_tests(new IO.File('t/data/block.data'),
                 }
               }));
 
-//TestHarness.go();
-t.run('test_1');
+TestHarness.go();
+//t.run('test_1');

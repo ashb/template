@@ -41,7 +41,7 @@ var params = {
   ],
   sections: {
     one: 'Section One',
-    two: 'SectionTrwo',
+    two: 'Section Two',
     three: 'Section Three',
     four: 'Section Four'
   },

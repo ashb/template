@@ -51,12 +51,16 @@ var params = {
   ]
 };
 
-
-t.build_tests(new IO.File('t/data/foreach.data'),
-              new Template({ 
+var tts = {
+  default: new Template({ 
                 POST_CHOMP: 1,
                 INTERPOLATE: 1,
-              }), params);
+           }),
+  debug: new Template
+};
+
+t.build_tests(new IO.File('t/data/foreach.data'),
+              tts, params);
 
 TestHarness.go();
 //t.run('test_1');

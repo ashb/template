@@ -429,6 +429,7 @@ last outer
 1, 2, 3, 4, 
 
 -- test --
+-- use debug --
 [% FOREACH a = [ 1, 2, 3 ] -%]
 * [% a %]
 [% END -%]

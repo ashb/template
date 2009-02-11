@@ -32,7 +32,7 @@ if (this.TestHarness === undefined)
 
     // This is the main testing sub-routine.
     build_tests: function (data, tproc, params) {
-      var tprocs;
+      var tprocs = [];
 
       params = params || {};
 

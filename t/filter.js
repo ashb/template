@@ -45,11 +45,11 @@ var filters = {
 t.build_tests(new IO.File('t/data/filter.data'),
               new Template({ 
                 POST_CHOMP: 1,
-                FILTERS: filters
+                FILTERS: filters,
               }), params);
 
-TestHarness.go();
-//t.run('test_1');
+//TestHarness.go();
+t.run('test_1');
 
 
 function microjive() {

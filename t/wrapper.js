@@ -3,7 +3,7 @@ require.paths.unshift('t/lib', 'lib');
 var Template = require('Template').Template;
 Template.Test = require('Template/Test').Test;
 
-t = new Template.Test();
+var t = new Template.Test();
 t.name = 'wrapper';
 
 t.build_tests(require('io').File('t/data/wrapper.data'),

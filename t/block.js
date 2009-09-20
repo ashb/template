@@ -1,17 +1,12 @@
-$importer.context = this;
+require.paths.unshift('t/lib', 'lib');
 
-$importer.paths.unshift('t/lib', 'lib');
-
-$importer.load('Template');
-$importer.load('TestHarness');
-$importer.load('Template.Test');
-
-warn = Function.bind(IO.stderr, 'print');
+var Template = require('Template').Template;
+Template.Test = require('Template/Test').Test;
 
 t = new Template.Test();
 t.name = 'block';
 
-t.build_tests(new IO.File('t/data/block.data'),
+t.build_tests(require('io').File('t/data/block.data'),
               new Template({ 
                 POST_CHOMP: 1,
                 INCLUDE_PATH: ['t/data/lib'],
@@ -25,5 +20,4 @@ t.build_tests(new IO.File('t/data/block.data'),
                 }
               }), t.callsign());
 
-TestHarness.go();
-//t.run('test_1');
+require('test').runner(t);

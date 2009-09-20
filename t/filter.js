@@ -1,15 +1,12 @@
-$importer.context = this;
+require.paths.unshift('t/lib', 'lib');
 
-$importer.paths.unshift('t/lib', 'lib');
+var Template = require('Template').Template;
+Template.Test = require('Template/Test').Test;
 
-$importer.load('Template');
-$importer.load('TestHarness');
-$importer.load('Template.Test');
+t = new Template.Test();
 
 var stderr = '',
     file   = 'xyz';
-
-warn = function() { stderr += Array.prototype.join.call(arguments, " "); };
 
 t = new Template.Test();
 t.name = 'filter';
@@ -42,14 +39,13 @@ var filters = {
 };
 
 
-t.build_tests(new IO.File('t/data/filter.data'),
+t.build_tests(require('io').File('t/data/filter.data'),
               new Template({ 
                 POST_CHOMP: 1,
                 FILTERS: filters,
               }), params);
 
-//TestHarness.go();
-t.run('test_1');
+require('test').runner(t);
 
 
 function microjive() {

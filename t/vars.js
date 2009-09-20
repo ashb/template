@@ -1,16 +1,11 @@
-$importer.context = this;
+require.paths.unshift('t/lib', 'lib');
 
-$importer.paths.unshift('t/lib', 'lib');
+var Template = require('Template').Template;
+Template.Test = require('Template/Test').Test;
 
-$importer.load('Template');
-$importer.load('TestHarness');
-$importer.load('Template.Test');
-
-warn = Function.bind(IO.stderr, 'print');
-
-t = new Template.Test();
+var t = new Template.Test();
 t.name = 'vars';
-t_v2 = new Template.Test();
+var t_v2 = new Template.Test();
 t_v2.name = 'vars_v2';
 
 
@@ -19,26 +14,31 @@ t_v2.name = 'vars_v2';
     default: new Template({
       INTERPOLATE: 1, 
       ANYCASE: 1, 
-      V1DOLLAR: 1, 
+      V1DOLLAR: 1
       //DBG_OUTPUT_CHUNKS: 1,
       //DBG_OUTPUT_FUNC: 1,
       //DEBUG: 1
     }),
     notcase: new Template({INTERPOLATE: 1})
   }
-  t.build_tests(new IO.File('t/data/vars.data'), 
+  t.build_tests(require('io').File('t/data/vars.data'), 
                 tts, make_params.apply(t));
+
+  exports.test_vars = t;
+
   tts = {
     default: new Template({
       INTERPOLATE: 1, 
-      ANYCASE: 1, 
+      ANYCASE: 1
     }),
     notcase: new Template({INTERPOLATE: 1})
   }
-  t_v2.build_tests(new IO.File('t/data/vars_v2.data'), 
+  t_v2.build_tests(require('io').File('t/data/vars_v2.data'), 
                    tts, make_params.apply(t_v2));
+  exports.test_vars_v2 = t_v2;
 })()
 
+// Functions needed for running the tests
 var days = "Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(/ /);
 var day = -1;
 function yesterday() {
@@ -74,7 +74,7 @@ function yankee() {
 }
 
 function make_params() {
-  c = this.callsign();
+  var c = this.callsign();
 
   var count = 0;
 
@@ -140,7 +140,7 @@ function make_params() {
   };
 }
 
-TestHarness.go();
+require('test').runner(exports);
 //t.go();
 //t_v2.go();
 //t.run('test_1');

@@ -1,18 +1,13 @@
-$importer.context = this;
+require.paths.unshift('t/lib', 'lib');
 
-$importer.paths.unshift('t/lib', 'lib');
-
-$importer.load('Template');
-$importer.load('TestHarness');
-$importer.load('Template.Test');
-
-warn = Function.bind(IO.stderr, 'print');
+var Template = require('Template').Template;
+Template.Test = require('Template/Test').Test;
 
 t = new Template.Test();
 t.name = 'binop';
 
 var counter = 0;
-t.build_tests(new IO.File('t/data/binop.data'),
+t.build_tests(require('io').File('t/data/binop.data'),
               new Template({INTERPOLATE: 1, POST_CHOMP: 1}),
               { yes: 1,
                 no: 0,
@@ -28,5 +23,4 @@ t.build_tests(new IO.File('t/data/binop.data'),
                 reset: function() { return counter = 0; }
               });
 
-TestHarness.go();
-//t.run('test_1');
+require('test').runner(t);

@@ -460,22 +460,6 @@ before
 ERROR redirect: OUTPUT_PATH is not set
 
 -- test --
--- use evalperl --
-[% FILTER evalperl %]
-   $a = 10;
-   $b = 20;
-   $stash->{ foo } = $a + $b;
-   $stash->{ bar } = $context->config->{ BARVAL };
-   "all done"
-[% END +%]
-foo: [% foo +%]
-bar: [% bar %]
--- expect --
-all done
-foo: 30
-bar: some random value
-
--- test --
 [% TRY -%]
 before
 [% FILTER file(outfile) -%]
@@ -508,29 +492,6 @@ The dog sat on the log
 bar: The cat sat on the mat
 bar: The dog sat on the log
 
--- test --
-[% PERL %]
-# dynamic filter factory
-$Template::Filters::FILTERS->{ baz } = [
-    sub {
-	my $context = shift;
-	my $word = shift || 'baz';
-	return sub {
-	    my $text = shift; 
-            $text =~ s/^/$word: /gm;
-	    return $text;
-	};
-    }, 1 ];
-[% END -%]
-[% FILTER baz -%]
-The cat sat on the mat
-The dog sat on the log
-[% END %]
-[% FILTER baz('wiz') -%]
-The cat sat on the mat
-The dog sat on the log
-[% END %]
-
 -- expect --
 baz: The cat sat on the mat
 baz: The dog sat on the log
@@ -538,38 +499,6 @@ baz: The dog sat on the log
 wiz: The cat sat on the mat
 wiz: The dog sat on the log
 
-
--- test --
--- use evalperl --
-[% PERL %]
-$stash->set('merlyn', bless \&merlyn1, 'ttfilter');
-sub merlyn1 {
-    my $text = shift || '<no text>';
-    $text =~ s/stone/henge/g;
-    return $text;
-}
-[% END -%]
-[% FILTER $merlyn -%]
-Let him who is without sin cast the first stone.
-[% END %]
--- expect --
-Let him who is without sin cast the first henge.
-
--- test --
--- use evalperl --
-[% PERL %]
-$stash->set('merlyn', sub { \&merlyn2 });
-sub merlyn2 {
-    my $text = shift || '<no text>';
-    $text =~ s/stone/henge/g;
-    return $text;
-}
-[% END -%]
-[% FILTER $merlyn -%]
-Let him who is without sin cast the first stone.
-[% END %]
--- expect --
-Let him who is without sin cast the first henge.
 
 -- test --
 [% myfilter = 'html' -%]
@@ -586,37 +515,6 @@ blah blah blah
 -- expect --
 blah_blah_blah
 
--- test --
--- use evalperl --
-[% PERL %]
-$context->filter(\&newfilt, undef, 'myfilter');
-sub newfilt {
-    my $text = shift;
-    $text =~ s/\s+/=/g;
-    return $text;
-}
-[% END -%]
-[% FILTER myfilter -%]
-This is a test
-[%- END %]
--- expect --
-This=is=a=test
-
--- test --
-[% PERL %]
-$context->define_filter('xfilter', \&xfilter);
-sub xfilter {
-    my $text = shift;
-    $text =~ s/\s+/X/g;
-    return $text;
-}
-[% END -%]
-[% FILTER xfilter -%]
-blah blah blah
-[%- END %]
--- expect --
-blahXblahXblah
-
 
 -- test --
 [% FILTER another(3) -%]
@@ -626,20 +524,6 @@ foo bar baz
 foo bar baz
 foo bar baz
 foo bar baz
-
--- test --
-[% '$stash->{ a } = 25' FILTER evalperl %]
-[% a %]
--- expect --
-25
-25
-
--- test --
-[% '$stash->{ a } = 25' FILTER perl %]
-[% a %]
--- expect --
-25
-25
 
 -- test --
 [% FILTER indent -%]
@@ -748,4 +632,121 @@ Foobar
 [% 'FOOBAR' | lcfirst %]
 -- expect --
 fOOBAR
+
+-- stop --
+-- test --
+-- use evalperl --
+[% FILTER evalperl %]
+   $a = 10;
+   $b = 20;
+   $stash->{ foo } = $a + $b;
+   $stash->{ bar } = $context->config->{ BARVAL };
+   "all done"
+[% END +%]
+foo: [% foo +%]
+bar: [% bar %]
+-- expect --
+all done
+foo: 30
+bar: some random value
+
+-- test --
+-- use evalperl --
+[% PERL %]
+$stash->set('merlyn', bless \&merlyn1, 'ttfilter');
+sub merlyn1 {
+    my $text = shift || '<no text>';
+    $text =~ s/stone/henge/g;
+    return $text;
+}
+[% END -%]
+[% FILTER $merlyn -%]
+Let him who is without sin cast the first stone.
+[% END %]
+-- expect --
+Let him who is without sin cast the first henge.
+
+-- test --
+-- use evalperl --
+[% PERL %]
+$stash->set('merlyn', sub { \&merlyn2 });
+sub merlyn2 {
+    my $text = shift || '<no text>';
+    $text =~ s/stone/henge/g;
+    return $text;
+}
+[% END -%]
+[% FILTER $merlyn -%]
+Let him who is without sin cast the first stone.
+[% END %]
+-- expect --
+Let him who is without sin cast the first henge.
+
+-- test --
+-- use evalperl --
+[% PERL %]
+$context->filter(\&newfilt, undef, 'myfilter');
+sub newfilt {
+    my $text = shift;
+    $text =~ s/\s+/=/g;
+    return $text;
+}
+[% END -%]
+[% FILTER myfilter -%]
+This is a test
+[%- END %]
+-- expect --
+This=is=a=test
+
+-- test --
+[% PERL %]
+$context->define_filter('xfilter', \&xfilter);
+sub xfilter {
+    my $text = shift;
+    $text =~ s/\s+/X/g;
+    return $text;
+}
+[% END -%]
+[% FILTER xfilter -%]
+blah blah blah
+[%- END %]
+-- expect --
+blahXblahXblah
+
+-- test --
+[% '$stash->{ a } = 25' FILTER evalperl %]
+[% a %]
+-- expect --
+25
+25
+
+-- test --
+[% '$stash->{ a } = 25' FILTER perl %]
+[% a %]
+-- expect --
+25
+25
+
+-- test --
+[% PERL %]
+# dynamic filter factory
+$Template::Filters::FILTERS->{ baz } = [
+    sub {
+	my $context = shift;
+	my $word = shift || 'baz';
+	return sub {
+	    my $text = shift; 
+            $text =~ s/^/$word: /gm;
+	    return $text;
+	};
+    }, 1 ];
+[% END -%]
+[% FILTER baz -%]
+The cat sat on the mat
+The dog sat on the log
+[% END %]
+[% FILTER baz('wiz') -%]
+The cat sat on the mat
+The dog sat on the log
+[% END %]
 

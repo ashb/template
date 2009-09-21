@@ -3,7 +3,7 @@ require.paths.unshift('t/lib', 'lib');
 var Template = require('Template').Template;
 Template.Test = require('Template/Test').Test;
 
-t = new Template.Test();
+var t = new Template.Test();
 
 var stderr = '',
     file   = 'xyz';
@@ -35,14 +35,14 @@ var filters = {
     'censor'     : [ censor_factory, 1 ],
     'badfact'    : [ function() { return 'nonsense' }, 1 ],
     'badfilt'    : [ 'rubbish', 1 ],
-    'barfilt'    : [ barf_up, 1 ],
+    'barfilt'    : [ barf_up, 1 ]
 };
 
 
 t.build_tests(require('io').File('t/data/filter.data'),
               new Template({ 
                 POST_CHOMP: 1,
-                FILTERS: filters,
+                FILTERS: filters
               }), params);
 
 require('test').runner(t);

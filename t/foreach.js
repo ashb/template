@@ -3,7 +3,7 @@ require.paths.unshift('t/lib', 'lib');
 var Template = require('Template').Template;
 Template.Test = require('Template/Test').Test;
 
-t = new Template.Test();
+var t = new Template.Test();
 t.name = 'foreach';
 
 var months = 'jan feb mar apr may jun jul aug sep oct nov dec'.split(/ /);
@@ -49,7 +49,7 @@ var params = {
 var tts = {
   default: new Template({ 
                 POST_CHOMP: 1,
-                INTERPOLATE: 1,
+                INTERPOLATE: 1
            }),
   debug: new Template
 };

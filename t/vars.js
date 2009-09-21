@@ -113,7 +113,7 @@ function make_params() {
     halt: halt,
     join: function() {
       var args = Array.prototype.slice.call(arguments);
-      s = args.shift();
+      var s = args.shift();
       return args.join(s);
     },
     split: function(s,str) { return str.split(s); },

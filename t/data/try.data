@@ -10,7 +10,6 @@
 -- expect --
 [undef] foxtrot
 
---stop--
 -- test --
 [% TRY %]
 [% THROW $f %]
@@ -40,6 +39,7 @@ try this
 caught barf: Feeling sick
 after try
 
+--stop--
 -- test --
 before
 [% TRY %]

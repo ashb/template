@@ -11,7 +11,7 @@ replace.throw_egg = function() {
   throw new Template.Exception('egg', 'scrambled');
 }
 
-replace.throw_any = function() { throw "undefined error"; };
+replace.throw_any = function() { throw "undefined error\n"; };
 
 t.build_tests(require('io').File('t/data/try.data'),
               new Template({
